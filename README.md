@@ -27,10 +27,3 @@ I used a combination of SQL, Python, Pandas and Numpy to get the data extracted 
 2. run script from the command prompt from the directory on a PC which can access the Historian by means of Windows Authentication. ```>py .\get-data-new.py```  
 3. The script will create a csv file for each tagname with the date and the value for the day.  
 
-## Licensing  
-
-Please note that all Sibanye Stillwater data is protected. Rights to data is reserved. Please familiarize yourself with company policy regarding the company data.  
-
-Except for Sibanye Stillwater specific data, the script can be re-used in any legal way.  
-
-end.  
