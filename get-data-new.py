@@ -8,15 +8,16 @@ REVISION: 0
 REVISION DATE: 2020-08-17 (Week 34)
 REVISION AUTHOR: Roan Fourie
 REVISION DESCRIPTION: 
-        edit the list of tags and edit the dates and times where data must be parsed from.
         Return files with the day's maximum value.
-USAGE:   
+USAGE:  NB! For now the script has to run on the GR to get the correct authentication to the Historian. 
+        Edit the list of tags and edit the dates and times where data must be parsed from.
 NOTES:
 '''
 
 import pyodbc 
 import pandas as pd
 import numpy as np
+import time
 
 tags = ['KDCE_GP2_00INS01_00IQWT320.FA_PV0',
     'KDCE_GP2_00INS02_00IQWT320.FA_PV0',
@@ -25,9 +26,9 @@ tags = ['KDCE_GP2_00INS01_00IQWT320.FA_PV0',
 
 # Make a SQL connection
 cnxn = pyodbc.connect("Driver={SQL Server Native Client 11.0};"
-                      "Server=SGLX00SCHIS00GL;"
-                      "Database=Runtime;"
-                      "Trusted_Connection=yes;")
+                    "Server=SGLX00SCHIS00GL;"
+                    "Database=Runtime;"
+                    "Trusted_Connection=yes;")
 
 
 with cnxn:  # using the with statement will automatically close the connections
@@ -42,8 +43,8 @@ with cnxn:  # using the with statement will automatically close the connections
         AND wwResolution = 600000 \
         AND wwQualityRule = 'Extended' \
         AND wwVersion = 'Latest' \
-        AND DateTime >= '20200501 05:00:00.000' \
-        AND DateTime <= '20200814 05:00:00.000'\") \
+        AND DateTime >= '20200701 05:00:00.000' \
+        AND DateTime <= '20200910 05:00:00.000'\") \
         where Time >= '01:00' \
         AND Time <= '05:30'", cnxn)
 
@@ -57,5 +58,7 @@ with cnxn:  # using the with statement will automatically close the connections
 
         print(df1)
 
-        df1.to_csv(f'c:\\scada\\{tag}-results.csv', sep=",", encoding='utf-8')
+        lt = time.localtime(time.time())
+        timestamp = f'{lt[0]}-{lt[1]}-{lt[2]}_{lt[3]}-{lt[4]}_{lt[5]}'
+        df1.to_csv(f'{tag}-results{timestamp}.csv', sep=",", encoding='utf-8')
 
